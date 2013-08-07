@@ -176,9 +176,10 @@ sub _check_ldap_dn {
 
     # We just want to check if the dn is valid.
     # 'filter' can't be empty neither omitted.
-    my $dn_result = $ldap->search(( base   => $ldap_dn,
+    my $base_dn = Bugzilla->params->{"LDAPBaseDN"};
+    my $dn_result = $ldap->search(( base   => $base_dn,
                                     scope  => 'sub',
-                                    filter => '1=1' ));
+                                    filter => $ldap_dn ));
     if ($dn_result->code) {
         ThrowUserError('group_ldap_dn_invalid', { ldap_dn => $ldap_dn });
     }
